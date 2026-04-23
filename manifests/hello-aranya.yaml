@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-aranya
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello-aranya
+  template:
+    metadata:
+      labels:
+        app: hello-aranya
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        lifecycle:
+          postStart:
+            exec:
+              command: ["/bin/sh", "-c", "echo 'hello aranya' > /usr/share/nginx/html/index.html"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-aranya-svc
+spec:
+  type: NodePort
+  selector:
+    app: hello-aranya
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      nodePort: 31080

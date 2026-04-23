@@ -1,0 +1,37 @@
+all:
+  hosts:
+    node1:
+      ansible_host: 138.197.209.135
+      ip: 138.197.209.135
+      access_ip: 138.197.209.135
+      ansible_user: root
+      ansible_ssh_private_key_file: /inventory/id_rsa_aranya
+    node2:
+      ansible_host: 157.230.172.21
+      ip: 157.230.172.21
+      access_ip: 157.230.172.21
+      ansible_user: root
+      ansible_ssh_private_key_file: /inventory/id_rsa_aranya
+    node3:
+      ansible_host: 157.245.234.52
+      ip: 157.245.234.52
+      access_ip: 157.245.234.52
+      ansible_user: root
+      ansible_ssh_private_key_file: /inventory/id_rsa_aranya
+  children:
+    kube_control_plane:
+      hosts:
+        node1:
+    kube_node:
+      hosts:
+        node2:
+        node3:
+    etcd:
+      hosts:
+        node1:
+        node2:
+        node3:
+    k8s_cluster:
+      children:
+        kube_control_plane:
+        kube_node:
